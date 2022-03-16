@@ -1,43 +1,40 @@
-import models.Reimbursement;
-import models.User;
-import repositories.UserDAO;
-import repositories.UserDAOImpl;
-import services.UserService;
+import controllers.UserController;
+import io.javalin.Javalin;
 
-import java.util.Scanner;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class MethodTest {
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        Scanner sc = new Scanner(System.in);
+        Javalin app = Javalin.create().start(9000);
 
-        System.out.print("Username: ");
-        String username = sc.nextLine();
+        UserController userController = new UserController();
 
-        /*System.out.print("Password: ");
-        String password = sc.nextLine();
+        //User Login
+        app.post("/login", userController::login);
 
-        User user = userService.validateCredentials(username, password);
+        //Employee Methods
+        app.get("/reimbs", userController::pastReimbs);
 
-        if(user != null){
-            Reimbursement reimb = new Reimbursement();
+        //Finance Manager Methods
+        app.routes(() -> {
+            path("{username}/all", () -> {
+                get(userController::allReimbs);
+                path("filter", () -> {
+                    get(userController::reimbsByStatus);
+                });
+            });
 
-            System.out.print("Dollar Amount: ");
-            reimb.setAmount(Double.valueOf(sc.nextLine()));
+            path("{username}", () -> {
+                path("approve", () -> {
+                    patch(userController::approveReimb);
+                });
+                path("deny", () -> {
+                    patch(userController::denyReimb);
+                });
+            });
+        });
 
-            System.out.print("Description: ");
-            reimb.setDescription(sc.nextLine());
-
-            reimb.setAuthor(user.getId());
-
-            System.out.print("Type ID: ");
-            reimb.setType(Integer.parseInt(sc.nextLine()));
-
-            userService.addReimb(username, reimb);
-        }*/
-
-        System.out.println(userService.viewAllReimbs(username));
-        //System.out.println(userService.filterReimbsByStatus(username, Integer.parseInt(id)));
-
+        //Methods for both Roles
+        app.post("/{username}/new", userController::newReimb);
     }
 }

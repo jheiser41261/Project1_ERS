@@ -191,4 +191,37 @@ public class UserDAOImpl implements UserDAO{
 
         return user;
     }
+
+    @Override
+    public Reimbursement getReimb(Integer reimbId) {
+        Reimbursement reimb = null;
+
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?;";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, reimbId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                reimb = new Reimbursement(
+                        rs.getInt(1),
+                        rs.getDouble(2),
+                        rs.getDate(3),
+                        rs.getDate(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8),
+                        rs.getInt(9)
+                );
+            }
+
+        } catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+
+        return reimb;
+    }
 }
