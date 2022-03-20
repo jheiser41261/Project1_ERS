@@ -1,0 +1,133 @@
+body{
+    background-image: url(../images/bg.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+#dashboard{
+    text-align: center;
+    color: white;
+    font-family: 'Righteous', cursive;
+    font-size: 30px;
+    margin-top: 20px;
+    text-decoration: underline;
+}
+
+#table-title{
+    text-align: center;
+    color: white;
+    font-family: 'Righteous', cursive;
+    font-size: medium;
+    margin-top: 50px;
+}
+
+#container{
+    padding: 15px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    min-width: 700px;
+    background-color: rgba(49, 215, 236, 0.692);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-family: 'Righteous', cursive;
+}
+
+#reimb-table{
+    min-width: 600px;
+    border-collapse: separate;
+}
+
+th{
+    text-align: center;
+    color: black;
+    background-color: rgba(0, 118, 196, 0.404);
+    border-radius: 6px;
+}
+
+td{
+    padding: 5px;
+}
+
+tbody tr:nth-child(even){
+    background-color: rgba(49, 214, 236, 0.212);
+}
+
+#reimb-prompt{
+    text-align: center;
+    color: white;
+    font-family: 'Righteous', cursive;
+}
+
+#new-reimb-container{
+    padding: 15px;
+    margin-left: 33%;
+    margin-right: 33%;
+    min-width: 350px;
+    background-color: rgba(49, 215, 236, 0.692);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Righteous', cursive;
+}
+
+#new-reimb{
+    display: block;
+    text-align: left;
+    min-width: 272px;
+    width: 100%;
+}
+
+#radio-btns{
+    text-align: center;
+}
+
+#reimb-type{
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+#description{
+    width: 90%;
+    margin-left: 5%;
+    padding: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#amount{
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 5px;
+}
+
+#submitted{
+    width: 45%;
+    margin-left: 27.5%;
+}
+
+#submit{
+    display: block;
+    text-align: center;
+}
+
+#submit-btn{
+    width: 10%;
+    min-width: 65px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+    background-color: rgb(52, 52, 252);
+    color: white;
+    cursor: pointer;
+    font-family: 'Righteous', cursive;
+}
+
+#submit-btn:hover{
+    background-color: rgb(38, 103, 255);
+    transition: 0.2s;
+}
