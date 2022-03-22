@@ -41,18 +41,38 @@ public class UserService {
         return this.userDAO.filterReimbsByStatus(statusId);
     }
 
-    public void approveReimb(String username, Integer reimbId) {
+    public String approveReimb(String username, Integer reimbId) {
         User user = this.userDAO.getUser(username);
+        Reimbursement reimb = this.userDAO.getReimb(reimbId);
+        int id = user.getId();
+        int author = reimb.getAuthor();
 
-        if(user.getRole() == 2)
-            this.userDAO.approveReimb(reimbId, user.getId());
+        if(user.getRole() == 2) {
+            if (id != author) {
+                this.userDAO.approveReimb(reimbId, user.getId());
+                return "Reimbursement #" + reimbId + " approved";
+            }
+            return null;
+        }
+
+        return null;
     }
 
-    public void denyReimb(String username, Integer reimbId) {
+    public String denyReimb(String username, Integer reimbId) {
         User user = this.userDAO.getUser(username);
+        Reimbursement reimb = this.userDAO.getReimb(reimbId);
+        int id = user.getId();
+        int author = reimb.getAuthor();
 
-        if(user.getRole() == 2)
-            this.userDAO.denyReimb(reimbId, user.getId());
+        if(user.getRole() == 2) {
+            if (id != author) {
+                this.userDAO.denyReimb(reimbId, user.getId());
+                return "Reimbursement #" + reimbId + " denied";
+            }
+            return null;
+        }
+
+        return null;
     }
 
     public void addReimb(String username, Reimbursement reimbursement) {
@@ -70,5 +90,13 @@ public class UserService {
             return null;
 
         return user;
+    }
+
+    public User getUserById(Integer userId){
+        return userDAO.getUserById(userId);
+    }
+
+    public User getUserByUsername(String username){
+        return userDAO.getUser(username);
     }
 }

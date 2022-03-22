@@ -4,7 +4,7 @@ import io.javalin.http.staticfiles.Location;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-public class MethodTest {
+public class MainDriver {
     public static void main(String[] args) {
         Javalin app = Javalin.create(config -> {
             config.addStaticFiles("/", Location.CLASSPATH);
@@ -16,11 +16,12 @@ public class MethodTest {
         app.post("/login", userController::login); //Default path
 
         //Employee Methods
-        app.get("/reimbs", userController::pastReimbs); //Default dashboard for Employees
+        app.get("/employee/dashboard", userController::pastReimbs); //Default dashboard for Employees
 
         //Finance Manager Methods
+
         //Login
-        app.post("/login/fm", userController::loginFM);
+        app.post("/fmlogin", userController::loginFM);
 
         //Dashboard
         app.routes(() -> {
@@ -43,5 +44,9 @@ public class MethodTest {
 
         //Methods for both Roles
         app.post("/{username}/new", userController::newReimb);
+
+        //Utility methods
+        app.get("/user", userController::getUserById);
+        app.get("/username", userController::getUserByUsername);
     }
 }

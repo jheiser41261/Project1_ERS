@@ -22,6 +22,7 @@ public interface UserDAO {
     //Method for validating login credentials
     User getUser(String username);
 
-    //Method for preventing Finance Managers from updating their own submissions
+    //Utility Methods
     Reimbursement getReimb(Integer reimbId);
+    User getUserById(Integer userId);
 }

@@ -9,19 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="icon" href="../images/logotab.png">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="../../images/logotab.png">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="../index.html">
-            <img src="../images/logo.png" alt="" width="360" height="60">
+          <a class="navbar-brand" href="../">
+            <img src="../../images/logo.png" alt="" width="360" height="60">
           </a>
         </div>
     </nav>
 
-    <h3 id="dashboard">Welcome to the Control Panel!</h3>
+    <h3 id="dashboard"></h3>
     <h5 id="table-title">All Past Reimbursement Requests:</h5>
 
     <div id="container">
@@ -38,8 +38,8 @@
                     <th>Resolver</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+            <tbody id="reimbs">
+                <!-- <tr>
                     <td>1</td>
                     <td>Justin Heiser</td>
                     <td>Lodging</td>
@@ -67,7 +67,7 @@
                     <td>3/19/22</td>
                     <td>Denied</td>
                     <td>Manager 123</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
@@ -76,11 +76,12 @@
         <form id="status-select">
             <label for="status">Filter by Status:</label>
             <select name="status" id="status">
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="denied">Denied</option>
+                <option value="0">All</option>
+                <option value="1">Pending</option>
+                <option value="2">Approved</option>
+                <option value="3">Denied</option>
             </select>
-            <input type="button" id="filter-btn" value="Filter">
+            <button id="filter-btn" onclick=filterReimbs(event)>Filter</button>
         </form>
     </div>
 
@@ -91,17 +92,18 @@
             <input type="number" id="reimb-id" min="1" placeholder="Reimbursement ID">
             <span id="status-btns">
                 <div class="form-check form-check-inline" id="btn-1">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="status-btn" value="2">
                     <label class="form-check-label" for="inlineRadio1">Approve</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="status-btn" value="3">
                     <label class="form-check-label" for="inlineRadio2">Deny</label>
                 </div>
             </span>
-            <input type="button" id="update-btn" value="Update">
+            <input type="button" id="update-btn" onclick=updateStatus(event) value="Update">
         </form>
     </div>
+    <div id="error"></div>
 
     <h4 id="reimb-prompt">Add a new Reimbursement Request:</h4>
 
@@ -110,25 +112,34 @@
             <div id="radio-btns">
                 <span id="reimb-type">Type:</span>
                 <div class="form-check form-check-inline" id="btn-1">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="reimb-type" value="1">
                     <label class="form-check-label" for="inlineRadio1">Lodging</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="reimb-type" value="2">
                     <label class="form-check-label" for="inlineRadio2">Food</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="reimb-type" value="3">
                     <label class="form-check-label" for="inlineRadio3">Travel</label>
                 </div>
             </div>
             <div><input type="text" id="description" maxlength="50" placeholder="Description"></div>
             <div><input type="number" id="amount" step="0.01" min="0" max="1000" placeholder="Amount"></div>
-            <div><input type="date" id="submitted"></div>
         </form>
     </div>
 
-    <div id="submit"><div><input type="button" id="submit-btn" value="Submit"></div></div>
+    <div id="submit"><input type="button" id="submit-btn" onclick=newReimb(event) value="Submit"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="./fmdashboard.js"></script>
 </body>
+<footer>
+    <center>
+        <p>
+            Made by Justin Heiser - 
+            <a href="mailto:justin167@revature.net">justin167@revature.net</a>
+        </p>
+    </center>
+</footer>
 </html>

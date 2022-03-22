@@ -18,7 +18,7 @@ public class UserDAOImpl implements UserDAO{
         List<Reimbursement> reimbs = new ArrayList<>();
 
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ?;";
+            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ? ORDER BY reimb_submitted;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
@@ -193,11 +193,42 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
+    public User getUserById(Integer userId) {
+        User user = null;
+
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "SELECT * FROM ers_users WHERE ers_user_id = ?;";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                user = new User(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getInt(7)
+                );
+            }
+
+        } catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+
+        return user;
+    }
+
+    @Override
     public Reimbursement getReimb(Integer reimbId) {
         Reimbursement reimb = null;
 
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?;";
+            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, reimbId);
