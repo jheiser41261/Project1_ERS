@@ -1,9 +1,7 @@
 package controllers;
 
 import io.javalin.http.Context;
-import models.JsonResponse;
-import models.Reimbursement;
-import models.User;
+import models.*;
 import services.UserService;
 
 import java.util.List;
@@ -27,51 +25,57 @@ public class UserController {
 
         User userFromDb = userService.validateCredentials(credentials.getUsername(), credentials.getPassword());
 
+        context.sessionAttribute("user", userFromDb);
+
         if (userFromDb == null)
             jsonResponse = new JsonResponse(false, "Invalid Username or Password", null);
-        else if (userFromDb.getRole() != 1)
-            jsonResponse = new JsonResponse(false, userFromDb.getUsername() + " is a Finance Manager, please sign in through the correct form", null);
         else
             jsonResponse = new JsonResponse(true, "Login successful", userFromDb);
 
         context.json(jsonResponse);
     }
 
-    public void loginFM(Context context){
-        JsonResponse jsonResponse;
+    public void checkSession(Context context){
+        User user = context.sessionAttribute("user");
 
-        User credentials = context.bodyAsClass(User.class);
-
-        User userFromDb = userService.validateCredentials(credentials.getUsername(), credentials.getPassword());
-
-        if (userFromDb == null)
-            jsonResponse = new JsonResponse(false, "Invalid Username or Password", null);
-        else if (userFromDb.getRole() != 2)
-            jsonResponse = new JsonResponse(false, userFromDb.getUsername() + " is not registered as a Finance Manager", null);
-        else
-            jsonResponse = new JsonResponse(true, "Login successful", userFromDb);
-
-        context.json(jsonResponse);
+        if(user == null){
+            context.json(new JsonResponse(false, "You are not logged in, redirecting", null));
+        } else{
+            context.json(new JsonResponse(true, user.getUsername() + " is logged in", user));
+        }
     }
 
-    public void getUserById(Context context){
-        Integer userId = Integer.parseInt(context.queryParam("userId"));
-
-        User user = userService.getUserById(userId);
-        context.json(new JsonResponse(true, "Retrieved User #" + userId, user));
-    }
-
-    public void getUserByUsername(Context context){
-        String username = context.queryParam("username");
-
-        User user = userService.getUserByUsername(username);
-        context.json(new JsonResponse(true, "Retrieved user: " + username, user));
+    public void logout(Context context){
+        context.sessionAttribute("user", null);
+        context.json(new JsonResponse(true, "Logged out", null));
     }
 
     public void pastReimbs(Context context){
         Integer userId = Integer.parseInt(context.queryParam("userId"));
 
         List<Reimbursement> reimbs = userService.viewPastReimbs(userId);
+
+        for(Reimbursement reimb : reimbs){
+            String reimbStatus = reimb.getStatus();
+            String reimbType = reimb.getType();
+
+            Status status = null;
+            Type type = null;
+
+            for(Status status1 : Status.values()){
+                if(status1.getReimbStatus() == Integer.parseInt(reimbStatus))
+                    status = status1;
+            }
+
+            for(Type type1 : Type.values()){
+                if(type1.getReimbType() == Integer.parseInt(reimbType))
+                    type = type1;
+            }
+
+            reimb.setStatus(status.toString());
+            reimb.setType(type.toString());
+        }
+
         context.json(new JsonResponse(true, "Reimbursements for User: " + userId, reimbs));
     }
 
@@ -79,6 +83,28 @@ public class UserController {
         String username = context.pathParam("username");
 
         List<Reimbursement> reimbs = userService.viewAllReimbs(username);
+
+        for(Reimbursement reimb : reimbs){
+            String reimbStatus = reimb.getStatus();
+            String reimbType = reimb.getType();
+
+            Status status = null;
+            Type type = null;
+
+            for(Status status1 : Status.values()){
+                if(status1.getReimbStatus() == Integer.parseInt(reimbStatus))
+                    status = status1;
+            }
+
+            for(Type type1 : Type.values()){
+                if(type1.getReimbType() == Integer.parseInt(reimbType))
+                    type = type1;
+            }
+
+            reimb.setStatus(status.toString());
+            reimb.setType(type.toString());
+        }
+
         context.json(new JsonResponse(true, "Showing all reimbursements", reimbs));
     }
 
@@ -87,6 +113,28 @@ public class UserController {
         Integer statusId = Integer.parseInt(context.queryParam("statusId"));
 
         List<Reimbursement> reimbs = userService.filterReimbsByStatus(username, statusId);
+
+        for(Reimbursement reimb : reimbs){
+            String reimbStatus = reimb.getStatus();
+            String reimbType = reimb.getType();
+
+            Status status = null;
+            Type type = null;
+
+            for(Status status1 : Status.values()){
+                if(status1.getReimbStatus() == Integer.parseInt(reimbStatus))
+                    status = status1;
+            }
+
+            for(Type type1 : Type.values()){
+                if(type1.getReimbType() == Integer.parseInt(reimbType))
+                    type = type1;
+            }
+
+            reimb.setStatus(status.toString());
+            reimb.setType(type.toString());
+        }
+
         context.json(new JsonResponse(true, "All reimbursements of Status " + statusId, reimbs));
     }
 

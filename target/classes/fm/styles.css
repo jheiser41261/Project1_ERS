@@ -68,6 +68,10 @@ tbody tr:nth-child(even){
     background-color: rgba(49, 214, 236, 0.212);
 }
 
+#spinner-container{
+    margin-bottom: 20px;
+}
+
 /* Filter Selector Form */
 
 #filter-container{

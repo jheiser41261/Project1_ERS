@@ -18,7 +18,14 @@ public class UserDAOImpl implements UserDAO{
         List<Reimbursement> reimbs = new ArrayList<>();
 
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ? ORDER BY reimb_submitted;";
+            String sql = "SELECT r.reimb_id, r.reimb_amount, " +
+                    "r.reimb_submitted, r.reimb_resolved, r.reimb_description, " +
+                    "u.ers_username, us.ers_username, r.reimb_status_id, r.reimb_type_id " +
+                    "FROM ers_reimbursement r " +
+                    "LEFT JOIN ers_users u ON r.reimb_author = u.ers_user_id " +
+                    "LEFT JOIN ers_users us ON r.reimb_resolver = us.ers_user_id " +
+                    "WHERE r.reimb_author = ?" +
+                    "ORDER BY r.reimb_status_id;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
@@ -32,10 +39,10 @@ public class UserDAOImpl implements UserDAO{
                         rs.getDate(3),
                         rs.getDate(4),
                         rs.getString(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getInt(9)
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9)
                 ));
             }
 
@@ -51,7 +58,13 @@ public class UserDAOImpl implements UserDAO{
         List<Reimbursement> reimbs = new ArrayList<>();
 
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "SELECT * FROM ers_reimbursement ORDER BY reimb_submitted;";
+            String sql = "SELECT r.reimb_id, r.reimb_amount, " +
+                    "r.reimb_submitted, r.reimb_resolved, r.reimb_description, " +
+                    "u.ers_username, us.ers_username, r.reimb_status_id, r.reimb_type_id " +
+                    "FROM ers_reimbursement r " +
+                    "LEFT JOIN ers_users u ON r.reimb_author = u.ers_user_id " +
+                    "LEFT JOIN ers_users us ON r.reimb_resolver = us.ers_user_id " +
+                    "ORDER BY r.reimb_submitted;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -64,10 +77,10 @@ public class UserDAOImpl implements UserDAO{
                         rs.getDate(3),
                         rs.getDate(4),
                         rs.getString(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getInt(9)
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9)
                 ));
             }
 
@@ -83,7 +96,14 @@ public class UserDAOImpl implements UserDAO{
         List<Reimbursement> reimbs = new ArrayList<>();
 
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?;";
+            String sql = "SELECT r.reimb_id, r.reimb_amount, " +
+                    "r.reimb_submitted, r.reimb_resolved, r.reimb_description, " +
+                    "u.ers_username, us.ers_username, r.reimb_status_id, r.reimb_type_id " +
+                    "FROM ers_reimbursement r " +
+                    "LEFT JOIN ers_users u ON r.reimb_author = u.ers_user_id " +
+                    "LEFT JOIN ers_users us ON r.reimb_resolver = us.ers_user_id " +
+                    "WHERE r.reimb_status_id = ?" +
+                    "ORDER BY r.reimb_submitted;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, statusId);
@@ -97,10 +117,10 @@ public class UserDAOImpl implements UserDAO{
                         rs.getDate(3),
                         rs.getDate(4),
                         rs.getString(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getInt(9)
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9)
                 ));
             }
 
@@ -152,7 +172,7 @@ public class UserDAOImpl implements UserDAO{
             ps.setDouble(1, reimbursement.getAmount());
             ps.setString(2, reimbursement.getDescription());
             ps.setInt(3, userId);
-            ps.setInt(4, reimbursement.getType());
+            ps.setInt(4, Integer.parseInt(reimbursement.getType()));
 
             ps.executeUpdate();
 
@@ -242,10 +262,10 @@ public class UserDAOImpl implements UserDAO{
                         rs.getDate(3),
                         rs.getDate(4),
                         rs.getString(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getInt(9)
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9)
                 );
             }
 

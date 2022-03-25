@@ -1,6 +1,7 @@
 import controllers.UserController;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
+import models.Status;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -12,18 +13,15 @@ public class MainDriver {
 
         UserController userController = new UserController();
 
-        //User Login
+        //User Sessions
         app.post("/login", userController::login); //Default path
+        app.get("/check-session", userController::checkSession);
+        app.delete("/logout", userController::logout);
 
-        //Employee Methods
+        //Employee
         app.get("/employee/dashboard", userController::pastReimbs); //Default dashboard for Employees
 
-        //Finance Manager Methods
-
-        //Login
-        app.post("/fmlogin", userController::loginFM);
-
-        //Dashboard
+        //Finance Manager
         app.routes(() -> {
             path("{username}/all", () -> { //Default dashboard for Finance Managers
                 get(userController::allReimbs);
@@ -42,11 +40,7 @@ public class MainDriver {
             });
         });
 
-        //Methods for both Roles
+        //Both Roles
         app.post("/{username}/new", userController::newReimb);
-
-        //Utility methods
-        app.get("/user", userController::getUserById);
-        app.get("/username", userController::getUserByUsername);
     }
 }

@@ -6,7 +6,6 @@ import repositories.UserDAO;
 import repositories.UserDAOImpl;
 
 import java.util.List;
-import java.util.Objects;
 
 public class UserService {
     private UserDAO userDAO;
@@ -45,10 +44,10 @@ public class UserService {
         User user = this.userDAO.getUser(username);
         Reimbursement reimb = this.userDAO.getReimb(reimbId);
         int id = user.getId();
-        int author = reimb.getAuthor();
+        String author = reimb.getAuthor();
 
         if(user.getRole() == 2) {
-            if (id != author) {
+            if (id != Integer.parseInt(author)) {
                 this.userDAO.approveReimb(reimbId, user.getId());
                 return "Reimbursement #" + reimbId + " approved";
             }
@@ -62,10 +61,10 @@ public class UserService {
         User user = this.userDAO.getUser(username);
         Reimbursement reimb = this.userDAO.getReimb(reimbId);
         int id = user.getId();
-        int author = reimb.getAuthor();
+        String author = reimb.getAuthor();
 
         if(user.getRole() == 2) {
-            if (id != author) {
+            if (id != Integer.parseInt(author)) {
                 this.userDAO.denyReimb(reimbId, user.getId());
                 return "Reimbursement #" + reimbId + " denied";
             }
@@ -90,13 +89,5 @@ public class UserService {
             return null;
 
         return user;
-    }
-
-    public User getUserById(Integer userId){
-        return userDAO.getUserById(userId);
-    }
-
-    public User getUserByUsername(String username){
-        return userDAO.getUser(username);
     }
 }

@@ -1,24 +1,34 @@
 package models;
 
 public enum Status {
-    PENDING {
+    PENDING(1) {
         @Override
         public String toString(){
             return "Pending";
         }
     },
 
-    APPROVED {
+    APPROVED(2) {
         @Override
         public String toString(){
             return "Approved";
         }
     },
 
-    DENIED {
+    DENIED(3) {
         @Override
         public String toString(){
             return "Denied";
         }
+    };
+
+    private Integer reimbStatus;
+
+    Status(Integer reimbStatus){
+        this.reimbStatus = reimbStatus;
+    }
+
+    public Integer getReimbStatus() {
+        return reimbStatus;
     }
 }

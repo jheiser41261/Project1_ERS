@@ -8,28 +8,33 @@ public class Reimbursement {
     private Date submitted;
     private Date resolved;
     private String description;
-    private Integer author;
-    private Integer resolver;
-    private Integer status;
-    private Integer type;
+    private String author;
+    private String resolver;
+    private String status;
+    private String type;
 
     public Reimbursement() {
     }
 
-    public Reimbursement(Double amount, String description, Integer type) {
+    public Reimbursement(Integer id, String author) {
+        this.id = id;
+        this.author = author;
+    }
+
+    public Reimbursement(Double amount, String description, String type) {
         this.amount = amount;
         this.description = description;
         this.type = type;
     }
 
-    public Reimbursement(Double amount, String description, Integer author, Integer type) {
+    public Reimbursement(Double amount, String description, String author, String type) {
         this.amount = amount;
         this.description = description;
         this.author = author;
         this.type = type;
     }
 
-    public Reimbursement(Integer id, Double amount, Date submitted, Date resolved, String description, Integer author, Integer resolver, Integer status, Integer type) {
+    public Reimbursement(Integer id, Double amount, Date submitted, Date resolved, String description, String author, String resolver, String status, String type) {
         this.id = id;
         this.amount = amount;
         this.submitted = submitted;
@@ -81,35 +86,35 @@ public class Reimbursement {
         this.description = description;
     }
 
-    public Integer getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(Integer author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
-    public Integer getResolver() {
+    public String getResolver() {
         return resolver;
     }
 
-    public void setResolver(Integer resolver) {
+    public void setResolver(String resolver) {
         this.resolver = resolver;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
